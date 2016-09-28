@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: JR-Haarsieraad\n"
+"Project-Id-Version: DropMVC\n"
 "POT-Creation-Date: 2016-05-30 07:22+0200\n"
 "PO-Revision-Date: 2016-05-30 07:22+0200\n"
 "Last-Translator: \n"
