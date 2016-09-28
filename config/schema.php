@@ -11,7 +11,6 @@
  */
 
 return array(
-
     "settings"=>array(
         "id" => array("INT NOT NULL AUTO_INCREMENT", false),
         "object"=>array("CHAR(50)", false),

@@ -23,7 +23,6 @@
 
 include('app' . DIRECTORY_SEPARATOR . 'App.class.php');
 use \App\App;
-use Core\Mail;
 
 App::boot(false);
 
@@ -33,6 +32,7 @@ Process Installation
 if (isset($_POST['operation'])) {
     $operation = htmlspecialchars($_POST['operation']);
     unset($_POST['operation']);
+    $result = null;
     switch ($operation) {
         case "db_info":
             // STEP 1: Check database credentials provided by the user
@@ -52,27 +52,37 @@ if (isset($_POST['operation'])) {
             $result['status'] = true;
             break;
         case "install_db":
-            // STEP 4: Configure database
-            $op = $_SESSION['op'] === "new";
-            $App = App::getInstance(!$op);
+            try {
+                // STEP 4: Configure database
+                $op = $_SESSION['op'] === "new";
+                $App = App::getInstance(!$op);
 
-            // Install database
-            $App->install($op);
+                // Install database
+                $App->install($op);
 
-            $version = App::$version;
-            $_POST['version'] = $version;
+                $version = App::$version;
+                $_POST['version'] = $version;
 
-            // Load and update application settings
-            $App->loadAppSettings();
-            $App->config->update($_POST);
+                // Load and update application settings
+                $App->loadAppSettings();
+                $App->config->update($_POST, array());
 
-            // Create Page table
-            $AppPage = new \App\Controller\PagesController();
-            $AppPage->getPages();
+                // Create Page table
+                $AppPage = new \App\Controller\PagesController();
+                $AppPage->getPages();
 
-            $result['msg'] = "Database installation complete!";
-            $result['status'] = true;
+                // Clean Media
+                $Media = new \App\Controller\MediaController();
+                $Media->clean();
+
+                $result['msg'] = "Database installation complete!";
+                $result['status'] = true;
+            } catch (Exception $e) {
+                echo(json_encode($e));
+                exit();
+            }
             break;
+
         case "admin_creation":
             // Final step: create admin account (for new installation only)
             $user = new \App\Controller\UsersController();
@@ -214,7 +224,7 @@ if (isset($_POST['getpagecontent'])) {
     <link type='text/css' rel='stylesheet' href="app/Views/templates/default/css/essentials.css"/>
 
     <!-- JQuery -->
-    <script type="text/javascript" src="public/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="public/js/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="public/js/form.js"></script>
 
     <!-- PasswordChecker -->
@@ -275,7 +285,7 @@ if (isset($_POST['getpagecontent'])) {
         function loadingDiv(el) {
             el
                 .css('position','relative')
-                .append("<div class='loadingDiv' style='width: 100%; height: 100%;'></div>")
+                .append("<div class='loadingDiv' style='background: rgba(255, 255, 255, .8); width: 100%; height: 100%;'></div>")
                 .show();
         }
 
@@ -290,16 +300,45 @@ if (isset($_POST['getpagecontent'])) {
                 .remove();
         }
 
+        function showText(el, text) {
+            el.find('.feedbackForm').remove();
+            el.append("<div class='feedbackForm'></div>");
+            var width = el.width();
+            var height = el.height();
+            var feedbackForm = el.find('.feedbackForm');
+            var msg = "<div class='msg_status'>" + text + "</div>";
+            feedbackForm
+                .css({width: width+'px', height: height+'px'})
+                .html(msg)
+                .fadeIn(200);
+
+            setTimeout(function() {
+                feedbackForm
+                    .fadeOut(200)
+                    .remove();
+            }, 1000);
+        }
+
         /**
          * Proceed to database installation
          */
-        function proceed(operation, data) {
+        function proceed(operation, data, operationDiv, text, callback) {
             var dataToProcess = (data !== undefined) ? modOperation(data, operation): {operation: operation};
-            jQuery.ajax({
-                type: 'post',
+            return {
                 url: 'install.php',
-                data: dataToProcess
-            });
+                type: 'POST',
+                data: dataToProcess,
+                beforeSend: function () {
+                    showText(operationDiv, text);
+                },
+                complete: function (data) {
+                    var results = data.responseText;
+                    validsubmitform(operationDiv, results, callback);
+                },
+                error: function () {
+                    removeLoading(operationDiv);
+                }
+            };
         }
 
         /**
@@ -316,31 +355,46 @@ if (isset($_POST['getpagecontent'])) {
             return data;
         }
 
-        function checkingDB(operationDiv, data, url) {
-            var $def = $.Deferred();
-            jQuery.ajax({
-                type: 'post',
-                url: url,
-                data: data
-            });
-            $def.resolve(processAjax(operationDiv,data,false,url));
-            return $def.done(function() {
-            });
-        }
-
         /**
          * Go to next installation step
-         *
          **/
         function gonext() {
             step = parseInt(step) + 1;
             getpagecontent(step, op);
+            return true;
         }
 
         /**
-         * Process installation form
-         *
-         **/
+         * Test db credentials
+         * @param div
+         * @param url
+         * @param data
+         * @param callback
+         * @returns {boolean}
+         */
+        function test_db(div, url, data, callback) {
+            loadingDiv(div);
+            showText(div, 'Testing connection to database');
+
+            jQuery.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                success: function (data) {
+                    validsubmitform(div, data, callback, 2000);
+                },
+                error: function() {
+                    removeLoading(div);
+                }
+            });
+            return true;
+        }
+
+        /**
+         * Process installation step
+         * @param input
+         * @returns {boolean}
+         */
         function process(input) {
             var form = input.length > 0 ? $(input[0].form) : $();
             var operation = form.find('input[name="operation"]').val();
@@ -351,25 +405,67 @@ if (isset($_POST['getpagecontent'])) {
             // Check form validity
             if (!checkform(form)) return false;
 
-            loadingDiv(operationDiv);
-            $.when(jQuery.ajax({
-                type: 'post',
-                url: url,
-                data: data
-            })).done(function(result) {
-                var json = jQuery.parseJSON(result);
-                if (json.status) {
-                    $.when(proceed('do_conf', data), proceed('backup'), proceed('install_db'))
-                        .done(function() {
-                            removeLoading(operationDiv);
-                            gonext()
-                        });
-                } else {
-                    removeLoading(operationDiv);
+            var callback = function(result) {
+                if (result.status) {
+                    ajaxManager.run();
+                    ajaxManager.add(proceed('do_conf', data, operationDiv, 'Creating configuration file'));
+                    ajaxManager.add(proceed('backup', undefined, operationDiv, 'Backup files and database'));
+                    ajaxManager.add(proceed('install_db', undefined, operationDiv, 'Installing application', function() {
+                        ajaxManager.stop();
+                        removeLoading(operationDiv);
+                        gonext();
+                    })
+                    );
                 }
-            });
+            };
 
+            // Check database settings and credentials. If correct, continue installation
+            test_db(operationDiv, url, data, callback);
         }
+
+        /**
+         * Manage ajax queue
+         * @type {{add, remove, run, stop}}
+         */
+        var ajaxManager = (function() {
+            var requests = [];
+
+            return {
+                add:  function(opt) {
+                    requests.push(opt);
+                },
+                remove:  function(opt) {
+                    if( $.inArray(opt, requests) > -1 )
+                        requests.splice($.inArray(opt, requests), 1);
+                },
+                run: function() {
+                    var self = this,
+                        oriSuc;
+
+                    if( requests.length ) {
+                        oriSuc = requests[0].success;
+                        requests[0].success = function() {
+                            setTimeout(function() {
+                                if( typeof(oriSuc) === 'function' ) oriSuc();
+                                requests.shift();
+                                self.run.apply(self, []);
+                            }, 1000);
+                        };
+
+                        $.ajax(requests[0]);
+
+                    } else {
+                        self.tid = setTimeout(function() {
+                            self.run.apply(self, []);
+                        }, 1000);
+                    }
+                },
+                stop:  function() {
+                    requests = [];
+                    clearTimeout(this.tid);
+                }
+            };
+        }());
 
         var step = 0;
         var op = 'new';

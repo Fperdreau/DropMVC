@@ -163,7 +163,7 @@ class TradModel extends BaseModel {
                 FROM {$this->tablename} t
                     LEFT JOIN {$this->tradTable} p
                     ON t.{$column}=p.{$column}
-                WHERE p.{$key} LIKE '%{$id[$key]}%'
+                WHERE p.{$key}='{$id[$key]}'
         ";
         return $this->db->query($sql)->single($this->entity);
     }

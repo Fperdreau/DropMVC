@@ -1,5 +1,7 @@
 # Ignore configuration file
 /config/config.php
+.ovhconfig
+php_info.php
 
 # Uploads
 /uploads/
@@ -17,8 +19,6 @@
 
 /vendors/dompdf/lib/fonts/log.htm
 app/Cronjobs/logs/
-app/Plugins/
-app/Views/uploads/
 backup/complete/
 backup/mysql/
 
