@@ -1,0 +1,141 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: FPvision\n"
+"POT-Creation-Date: 2016-05-30 07:22+0200\n"
+"PO-Revision-Date: 2016-01-30 18:01+0100\n"
+"Last-Translator: \n"
+"Language-Team: Florian Perdreau <fp@florianperdreau.fr>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ../../app\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: Views\n"
+"X-Poedit-SearchPath-1: Views/about\n"
+"X-Poedit-SearchPath-2: Views/blog\n"
+"X-Poedit-SearchPath-3: Views/contact\n"
+"X-Poedit-SearchPath-4: Views/cv\n"
+"X-Poedit-SearchPath-5: Views/error\n"
+"X-Poedit-SearchPath-6: Views/home\n"
+"X-Poedit-SearchPath-7: Views/mail\n"
+"X-Poedit-SearchPath-8: Views/policy\n"
+"X-Poedit-SearchPath-9: Views/publications\n"
+"X-Poedit-SearchPath-10: Views/templates\n"
+"X-Poedit-SearchPath-11: Views/tools\n"
+"X-Poedit-SearchPath-12: Views/uploads\n"
+"X-Poedit-SearchPath-13: Controller\n"
+
+#: Views/BlogView.class.php:118
+msgid "Show more"
+msgstr ""
+
+#: Views/MailView.class.php:69
+msgid "Name"
+msgstr ""
+
+#: Views/MailView.class.php:70
+msgid "Your name"
+msgstr ""
+
+#: Views/MailView.class.php:73 Views/NewsLetterView.class.php:41
+msgid "Email"
+msgstr ""
+
+#: Views/MailView.class.php:74
+msgid "Your email"
+msgstr ""
+
+#: Views/MailView.class.php:78 Views/MailView.class.php:79
+msgid "Subject"
+msgstr ""
+
+#: Views/MailView.class.php:83
+msgid "Message"
+msgstr ""
+
+#: Views/MailView.class.php:84
+msgid "Your Message"
+msgstr ""
+
+#: Views/MailView.class.php:87
+msgid "Send"
+msgstr ""
+
+#: Views/MailView.class.php:126
+msgid "View this email in your browser"
+msgstr ""
+
+#: Views/MailView.class.php:152
+msgid ""
+"This email has been sent automatically. If you do not wish to receive emails "
+"from me"
+msgstr ""
+
+#: Views/MailView.class.php:153
+msgid "click here"
+msgstr ""
+
+#: Views/MailView.class.php:277
+msgid "Message successfully sent"
+msgstr ""
+
+#: Views/MailView.class.php:279
+msgid "Sorry, your message could not be sent"
+msgstr ""
+
+#: Views/MenuView.class.php:94
+msgid "Language"
+msgstr ""
+
+#: Views/NewsLetterView.class.php:88
+msgid "You have been unsubscribed from this mailing list"
+msgstr ""
+
+#: Views/NewsLetterView.class.php:90 Views/NewsLetterView.class.php:104
+msgid "Sorry, something has gone wrong. Please, try again."
+msgstr ""
+
+#: Views/NewsLetterView.class.php:102
+msgid "Thank you!"
+msgstr ""
+
+#: Views/PolicyView.class.php:80
+msgid ""
+"This site uses cookies. By continuing to browse the site, you are agreeing "
+"to our use of cookies."
+msgstr ""
+
+#: Views/PolicyView.class.php:81
+msgid "More info"
+msgstr ""
+
+#: Views/PolicyView.class.php:84
+msgid "OK"
+msgstr ""
+
+#: Views/PolicyView.class.php:102 Views/PolicyView.class.php:128
+msgid "terms and conditions"
+msgstr ""
+
+#: Views/about/index.php:28
+msgid "About me"
+msgstr ""
+
+#: Views/admin/blog/index.php:35 Views/admin/policy/index.php:38
+msgid "Select"
+msgstr ""
+
+#: Views/error/403.php:27
+msgid "Sorry, you are not allowed to access this page."
+msgstr ""
+
+#: Views/error/404.php:27
+msgid "Sorry, the page you were looking for does not exist."
+msgstr ""
+
+#: Views/error/work.php:28
+msgid "Sorry, the website is under maintenance. Please, come back later."
+msgstr ""

@@ -1,0 +1,28 @@
+# Ignore configuration file
+/config/config.php
+
+# Uploads
+/uploads/
+
+# Ignore backup files
+*.sql
+*.zip
+
+# Ignore logs files
+/app/Cronjobs/logs/*.txt
+
+# Ignore IDE files
+.project
+/.idea/
+
+/vendors/dompdf/lib/fonts/log.htm
+app/Cronjobs/logs/
+app/Plugins/
+app/Views/uploads/
+backup/complete/
+backup/mysql/
+
+# Sitemap
+/sitemap/
+*.xml
+

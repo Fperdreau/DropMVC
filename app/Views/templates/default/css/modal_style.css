@@ -1,0 +1,131 @@
+/**
+ *
+ * @author Florian Perdreau (fp@florianperdreau.fr)
+ * @copyright Copyright (C) 2016 Florian Perdreau
+ * @license <http://www.gnu.org/licenses/agpl-3.0.txt> GNU Affero General Public License v3
+ *
+ * This file is part of JR-Haarsieraad.
+ *
+ * JR-Haarsieraad is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * JR-Haarsieraad is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with JR-Haarsieraad.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* ******************************************************************************* */
+/* Global overlay */
+/* ******************************************************************************* */
+#lean_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0;
+    left: 0;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+
+/* ******************************************************************************* */
+/* Modal window*/
+/* ******************************************************************************* */
+.modalContainer {
+    position:absolute;
+    padding: 0;
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    top:1%;
+}
+
+.modalContainer .modal_section {
+    display: none;
+    margin: 0;
+    width: auto;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+.modal_section section {
+    box-shadow: none;
+}
+
+.popupBody {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: #FFF;
+    -webkit-box-shadow: 0px 0px 1px 1px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 0px 1px 1px rgba(0,0,0,1);
+    box-shadow: 0px 0px 1px 1px rgba(0,0,0,1);
+}
+
+
+/* Popup Styles*/
+.popupHeader {
+    font-size:1.2em;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-bottom:1px solid #DDD;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+}
+
+.action_btns {
+    text-decoration: none;
+    padding: 20px 10px;
+}
+
+.modal_close_btn {
+    vertical-align: top;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top:0;
+    padding:10px 15px;
+    background: url('../../../../../public/images/close.png') no-repeat center center;
+    background-color: rgba(255, 255, 255, .7);
+    background-size: 50% auto;
+    cursor: pointer;
+    color: #aaa;
+    font-size:1.2em;
+}
+
+.modal_container {
+    padding: 20px;
+}
+
+.modal_description {
+    padding: 10px;
+    background-color: rgba(100, 200, 100, .5);
+    margin-bottom: 10px;
+}
+
+.modal_section#delete_confirmation {
+    padding: 20px;
+}
+
+.error {
+    display: none;
+}
+
+.one_half {width:50%; display: block; float:left;}
+.one_half.last {width:45%; margin-left:5%; text-align: right;}
+
+.forgot_password {
+    cursor: pointer;
+    margin: 10px auto 10px auto;
+    text-align: center;
+    text-decoration: none;
+    color:#ED6347;
+}
